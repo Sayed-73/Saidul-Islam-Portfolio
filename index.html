@@ -6,16 +6,36 @@
 <title>Saidul Islam Sayed — Backend Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  // Apply saved theme before paint to avoid flash
+  (function(){
+    var saved = localStorage.getItem('theme');
+    if(saved === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
+  })();
+</script>
 <style>
   :root{
+    --bg: #F5F6F8;
+    --surface: #FFFFFF;
+    --border: #E3E6EB;
+    --text: #1C2129;
+    --text-dim: #5B6270;
+    --accent: #39ca76;
+    --accent-soft: #F3E7D3;
+    --teal: #1F6F6B;
+    --shadow: 0 1px 2px rgba(28,33,41,0.04), 0 6px 20px rgba(28,33,41,0.05);
+  }
+  html[data-theme="dark"]{
     --bg: #14171C;
-    --bg-alt: #1B1F26;
-    --line: #2B303A;
+    --surface: #1B1F26;
+    --border: #2B303A;
     --text: #E8E6E1;
     --text-dim: #9AA0AB;
-    --amber: #E8A33D;
+    --accent: #E8A33D;
+    --accent-soft: #3A2E17;
     --teal: #6FA8A3;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 20px rgba(0,0,0,0.35);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -23,284 +43,516 @@
     background:var(--bg);
     color:var(--text);
     font-family:'IBM Plex Sans', sans-serif;
-    line-height:1.6;
+    line-height:1.65;
     -webkit-font-smoothing:antialiased;
+    transition:background .25s ease, color .25s ease;
   }
-  ::selection{background:var(--amber);color:#14171C;}
+ .hero-summary{color:var(--text-dim);font-size:1.02rem;max-width:56ch;margin-bottom:20px;}
+  .contact-row{display:flex;gap:18px;flex-wrap:wrap;font-size:0.92rem;}
+  .contact-row a{color:var(--teal);font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;border-bottom:1px solid var(--border);padding-bottom:2px;margin-right:18px;}
+  .contact-row a:last-child{margin-right:0;}
+  .contact-row a:hover{color:var(--accent);border-color:var(--accent);text-decoration:underline;}
+
+  ::selection{background:var(--accent);color:#fff;}
   a{color:var(--teal);text-decoration:none;}
   a:hover{text-decoration:underline;}
-  a:focus-visible, button:focus-visible{outline:2px solid var(--amber);outline-offset:3px;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;}
+  img{max-width:100%;display:block;}
 
-  .wrap{max-width:760px;margin:0 auto;padding:0 28px;}
-
-  /* Nav */
-  header.nav{
-    position:sticky;top:0;z-index:10;
-    background:rgba(20,23,28,0.88);
-    backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
+  .layout{
+    max-width:1120px;margin:0 auto;padding:40px 24px 80px;
+    display:flex;gap:56px;align-items:flex-start;
   }
-  .nav-inner{
-    max-width:760px;margin:0 auto;padding:16px 28px;
+
+  /* Sidebar */
+  .sidebar{
+    width:272px;flex-shrink:0;position:sticky;top:32px;
+  }
+  .sidebar-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:26px 22px;box-shadow:var(--shadow);
+  }
+  .photo{
+    width:76px;height:76px;border-radius:10px;object-fit:cover;border:1px solid var(--border);margin-bottom:16px;
+  }
+  .sidebar h1{font-size:1.3rem;font-weight:700;line-height:1.25;color:var(--text);margin-bottom:6px;}
+  .role{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;color:var(--accent);margin-bottom:14px;}
+  .bio{font-size:0.9rem;color:var(--text-dim);margin-bottom:20px;}
+
+  .theme-toggle{
+    display:flex;align-items:center;gap:8px;width:100%;
+    background:var(--bg);border:1px solid var(--border);border-radius:8px;
+    padding:8px 12px;font-family:'IBM Plex Sans',sans-serif;font-size:0.85rem;color:var(--text);
+    cursor:pointer;margin-bottom:20px;
+  }
+  .theme-toggle:hover{border-color:var(--accent);}
+
+  .contact-list{list-style:none;margin-bottom:22px;}
+  .contact-list li{
     display:flex;justify-content:space-between;align-items:center;
-    gap:16px;flex-wrap:wrap;
+    padding:8px 0;border-bottom:1px solid var(--border);font-size:0.87rem;
   }
-  .nav-mark{
-    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.05rem;color:var(--text);
+  .contact-list li:last-child{border-bottom:none;}
+  .contact-list a{color:var(--text);}
+  .contact-list a:hover{color:var(--accent);text-decoration:none;}
+  .copy-btn{
+    background:none;border:none;color:var(--text-dim);font-size:0.78rem;cursor:pointer;
+    font-family:'IBM Plex Mono',monospace;padding:2px 6px;border-radius:4px;
   }
-  .nav-mark span{color:var(--amber);}
-  nav.links{display:flex;gap:22px;flex-wrap:wrap;}
-  nav.links a{color:var(--text-dim);font-size:0.92rem;margin-right:22px;}
-  nav.links a:last-child{margin-right:0;}
-  nav.links a:hover{color:var(--amber);text-decoration:none;}
+  .copy-btn:hover{color:var(--accent);}
 
-  /* Hero */
-  .hero{padding:64px 0 48px;position:relative;}
-  .hero-grid{
-    position:absolute;top:0;right:-40px;width:220px;height:220px;
-    background-image:radial-gradient(var(--line) 1.4px, transparent 1.4px);
-    background-size:18px 18px;
-    opacity:0.6;
-    z-index:0;
+  .resume-btn{
+    display:block;text-align:center;width:100%;
+    background:var(--accent);color:#fff;font-weight:600;font-size:0.88rem;
+    padding:10px 0;border-radius:8px;margin-bottom:22px;
   }
-  .hero-content{position:relative;z-index:1;display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap;}
-  .hero-photo{
-    width:104px;height:104px;border-radius:8px;object-fit:cover;
-    border:1px solid var(--line);
-    flex-shrink:0;
-  }
-  .hero-text{flex:1;min-width:240px;}
-  .eyebrow-role{
-    font-family:'IBM Plex Mono',monospace;color:var(--amber);font-size:0.85rem;letter-spacing:0.02em;margin-bottom:10px;
-  }
-  h1{
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:700;
-    font-size:2.4rem;
-    line-height:1.15;
-    color:var(--text);
-    margin-bottom:14px;
-  }
-  .hero-summary{color:var(--text-dim);font-size:1.02rem;max-width:56ch;margin-bottom:20px;}
-  .contact-row{display:flex;gap:18px;flex-wrap:wrap;font-size:0.92rem;}
-  .contact-row a{color:var(--text);border-bottom:1px solid var(--line);padding-bottom:2px;margin-right:18px;}
-  .contact-row a:last-child{margin-right:0;}
-  .contact-row a:hover{color:var(--amber);border-color:var(--amber);text-decoration:none;}
+  .resume-btn:hover{opacity:0.9;text-decoration:none;}
 
-  /* Sections */
-  section{padding:44px 0;border-top:1px solid var(--line);}
-  .section-head{
-    display:flex;align-items:baseline;gap:14px;margin-bottom:26px;
+  nav.side-nav{display:flex;flex-direction:column;gap:2px;}
+  nav.side-nav a{
+    font-size:0.87rem;color:var(--text-dim);padding:7px 10px;border-radius:6px;
+    border-left:2px solid transparent;
   }
-  .section-num{font-family:'IBM Plex Mono',monospace;color:var(--text-dim);font-size:0.85rem;}
-  h2{
-    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.4rem;color:var(--text);
+  nav.side-nav a:hover{color:var(--text);text-decoration:none;background:var(--bg);}
+  nav.side-nav a.active{
+    color:var(--accent);border-left-color:var(--accent);background:var(--accent-soft);font-weight:500;
   }
 
+  @media(max-width:860px){
+    .layout{flex-direction:column;gap:24px;padding-top:24px;}
+    .sidebar{position:static;width:100%;}
+    nav.side-nav{flex-direction:row;flex-wrap:wrap;gap:6px;}
+  }
+
+  /* Main content */
+  .main{flex:1;min-width:0;}
+  section{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:30px 32px;margin-bottom:22px;box-shadow:var(--shadow);
+    scroll-margin-top:24px;
+  }
+  .section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;}
+  .section-num{font-family:'IBM Plex Mono',monospace;color:var(--text-dim);font-size:0.8rem;}
+  h2{font-size:1.25rem;font-weight:600;color:var(--text);}
   p{color:var(--text-dim);}
-  .lede{color:var(--text);font-size:1.02rem;max-width:62ch;}
+  .lede{color:var(--text);font-size:1rem;max-width:64ch;}
 
-  /* Experience */
-  .exp-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
-  .exp-role{font-weight:600;color:var(--text);font-size:1.08rem;}
+  .exp-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:2px;}
+  .exp-role{font-weight:600;color:var(--text);font-size:1.04rem;}
   .exp-org{color:var(--teal);}
-  .exp-date{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;color:var(--text-dim);}
+  .exp-date{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--text-dim);background:var(--bg);padding:3px 9px;border-radius:20px;border:1px solid var(--border);}
+
   ul.bullets{list-style:none;margin-top:14px;}
-  ul.bullets li{
-    position:relative;padding-left:20px;margin-bottom:10px;color:var(--text-dim);font-size:0.97rem;
-  }
-  ul.bullets li::before{
-    content:"";position:absolute;left:0;top:0.6em;width:6px;height:6px;background:var(--amber);border-radius:1px;
-  }
+  ul.bullets li{position:relative;padding-left:20px;margin-bottom:9px;color:var(--text-dim);font-size:0.95rem;}
+  ul.bullets li::before{content:"";position:absolute;left:0;top:0.62em;width:6px;height:6px;background:var(--accent);border-radius:1px;}
 
-  /* Projects */
+  /* Project filter */
+  .filter-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+  .filter-btn{
+    font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--text-dim);
+    background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:6px 14px;cursor:pointer;
+  }
+  .filter-btn:hover{border-color:var(--accent);color:var(--text);}
+  .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+  .project-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:600px){.project-grid{grid-template-columns:1fr;}}
   .project{
-    padding:20px 0;border-bottom:1px solid var(--line);
+    border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg);
+    transition:opacity .2s ease, transform .2s ease;
   }
-  .project:last-child{border-bottom:none;}
-  .project-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;}
-  .project-title{font-weight:600;color:var(--text);font-size:1.02rem;}
-  .project-tag{
-    font-family:'IBM Plex Mono',monospace;font-size:0.76rem;color:var(--teal);
-    border:1px solid var(--line);border-radius:4px;padding:2px 8px;white-space:nowrap;
-  }
-  .project p{margin-top:6px;font-size:0.94rem;}
+  .project.hidden{display:none;}
+  .project-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
+  .project-title{font-weight:600;color:var(--text);font-size:0.98rem;}
+  .project-tag{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--teal);border:1px solid var(--border);border-radius:4px;padding:2px 7px;white-space:nowrap;}
+  .project p{font-size:0.9rem;}
 
-  /* Skills */
-  .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 32px;}
-  .skill-cat h3{
-    font-family:'Space Grotesk',sans-serif;font-size:0.92rem;font-weight:600;color:var(--amber);margin-bottom:8px;
-  }
-  .skill-cat p{color:var(--text-dim);font-size:0.93rem;}
-  @media(max-width:520px){.skill-grid{grid-template-columns:1fr;}}
+  .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 30px;}
+  @media(max-width:600px){.skill-grid{grid-template-columns:1fr;}}
+  .skill-cat h3{font-size:0.9rem;font-weight:600;color:var(--accent);margin-bottom:8px;}
+  .skill-cat p{color:var(--text-dim);font-size:0.92rem;}
 
-  /* Education / Certs */
-  .edu-item, .cert-item{margin-bottom:16px;}
+  .edu-item, .cert-item{margin-bottom:14px;font-size:0.94rem;}
   .edu-item .role{font-weight:600;color:var(--text);}
-  .edu-item .org, .cert-item{color:var(--text-dim);font-size:0.93rem;}
+  .edu-item .org{color:var(--text-dim);font-size:0.9rem;}
 
-  /* Footer */
-  footer{padding:44px 0 60px;border-top:1px solid var(--line);}
-  footer .contact-row a{border-color:var(--line);}
-  footer p{margin-top:18px;font-size:0.85rem;color:var(--text-dim);}
+  footer p.copyright{margin-top:16px;font-size:0.82rem;color:var(--text-dim);}
+
+  /* Back to top */
+  #backToTop{
+    position:fixed;bottom:26px;right:26px;
+    width:42px;height:42px;border-radius:50%;
+    background:var(--accent);color:#fff;border:none;cursor:pointer;
+    font-size:1rem;box-shadow:var(--shadow);
+    opacity:0;visibility:hidden;transform:translateY(10px);
+    transition:opacity .2s ease, transform .2s ease, visibility .2s;
+  }
+  #backToTop.show{opacity:1;visibility:visible;transform:translateY(0);}
+
+  /* Scroll progress bar */
+  #scrollProgress{
+    position:fixed;top:0;left:0;height:3px;width:0%;
+    background:var(--accent);z-index:999;transition:width .08s linear;
+  }
+
+  /* Status pill */
+  .status-pill{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:0.76rem;color:var(--teal);background:var(--accent-soft);
+    padding:4px 10px;border-radius:20px;margin-bottom:14px;font-weight:500;
+  }
+  .status-dot{
+    width:7px;height:7px;border-radius:50%;background:var(--teal);
+    box-shadow:0 0 0 0 rgba(31,111,107,0.5);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(31,111,107,0.45);}
+    70%{box-shadow:0 0 0 7px rgba(31,111,107,0);}
+    100%{box-shadow:0 0 0 0 rgba(31,111,107,0);}
+  }
+
+  .photo-wrap{position:relative;width:76px;margin-bottom:16px;}
+  .photo{
+    width:76px;height:76px;border-radius:10px;object-fit:cover;
+    border:2px solid var(--surface);outline:2px solid var(--accent);outline-offset:1px;
+    margin-bottom:0;
+  }
+
+  /* Terminal widget */
+  .terminal{
+    background:#1B1E24;border-radius:10px;overflow:hidden;margin-bottom:20px;
+    border:1px solid var(--border);
+  }
+  .term-bar{
+    display:flex;gap:6px;padding:9px 12px;background:#22262E;
+  }
+  .term-bar .dot{width:9px;height:9px;border-radius:50%;}
+  .term-bar .red{background:#EF6A5F;}
+  .term-bar .yellow{background:#F5BD4F;}
+  .term-bar .green{background:#61C454;}
+  .term-body{
+    padding:14px 14px 16px;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;
+    color:#D6D9DE;min-height:38px;
+  }
+  .term-body .prompt{color:#6FCF97;}
+  .term-body .cursor{
+    display:inline-block;width:6px;background:#D6D9DE;margin-left:1px;
+    animation:blink 1s step-start infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  /* Hover lift */
+  .project{cursor:default;}
+  .project:hover{
+    border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow);
+  }
+  nav.side-nav a{transition:background .15s ease, color .15s ease;}
+
+  /* Entrance animation (once, on load) */
+  @media (prefers-reduced-motion: no-preference){
+    .sidebar-card, .main section, .main footer{
+      animation:riseIn .5s ease both;
+    }
+    .main section:nth-of-type(1){animation-delay:.05s;}
+    .main section:nth-of-type(2){animation-delay:.1s;}
+    .main section:nth-of-type(3){animation-delay:.15s;}
+    .main section:nth-of-type(4){animation-delay:.2s;}
+    .main section:nth-of-type(5){animation-delay:.25s;}
+    .main footer{animation-delay:.3s;}
+  }
+  @keyframes riseIn{
+    from{opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:translateY(0);}
+  }
 </style>
 </head>
 <body>
+<div id="scrollProgress"></div>
 
-<header class="nav">
-  <div class="nav-inner">
-    <div class="nav-mark">Saidul<span>.</span>dev</div>
-    <nav class="links">
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
-</header>
+<div class="layout">
 
-<div class="wrap">
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="photo-wrap">
+        <img class="photo" src="myphoto.jpg" alt="Saidul Islam Sayed">
+      </div>
+      <div class="status-pill"><span class="status-dot"></span>Open to work</div>
+      <h1>Saidul Islam Sayed</h1>
+      <div class="role">Backend Developer — Laravel / PHP</div>
+      <p class="bio">CS graduate building Laravel backends and the AJAX-driven front ends that go with them.</p>
 
-  <section class="hero" style="border-top:none;">
-    <div class="hero-grid"></div>
-    <div class="hero-content">
-      <img class="hero-photo" src="myphoto.jpg" alt="Saidul Islam Sayed">
-      <div class="hero-text">
-        <div class="eyebrow-role">Backend Developer — Laravel / PHP</div>
-        <h1>Saidul Islam Sayed</h1>
-        <p class="hero-summary">I build and maintain web applications end to end — from Laravel backends and database design to the AJAX-driven interactions that make them feel responsive.</p>
-        <div class="contact-row">
-          <a href="mailto:saidulislam0400@gmail.com">Email</a>
-          <a href="https://www.linkedin.com/in/saidul-islam-051a99340/" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="https://github.com/Sayed-73" target="_blank" rel="noopener">GitHub</a>
-          <a href="tel:+8801776109373">+880 1776-109373</a>
+      <div class="terminal" aria-hidden="true">
+        <div class="term-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+        <div class="term-body"><span class="prompt">$</span> <span id="typed"></span><span class="cursor">&nbsp;</span></div>
+      </div>
+
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span id="themeIcon">🌙</span> <span id="themeLabel">Dark mode</span>
+      </button>
+
+      <a class="resume-btn" href="Saidul_Islam_Sayed_Resume.pdf" target="_blank" rel="noopener">Download Résumé</a>
+
+      <ul class="contact-list">
+        <li><a href="mailto:saidulislam0400@gmail.com">Email</a><button class="copy-btn" id="copyEmail" data-email="saidulislam0400@gmail.com">Copy</button></li>
+        <li><a href="https://www.linkedin.com/in/saidul-islam-051a99340/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://github.com/Sayed-73" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="tel:+8801776109373">Phone_No</a><button class="copy-btn" id="copyPhone" data-phone="+8801776109373">Copy</button></li>
+      </ul>
+
+      <nav class="side-nav" id="sideNav">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section id="about">
+      <div class="section-head"><span class="section-num">01</span><h2>About</h2></div>
+      <p class="lede">I'm a Computer Science graduate from the University of Global Village, Barishal, with a particular interest in networking, cybersecurity, and web development. I enjoy understanding systems from both the frontend and backend, and I care about writing clean, maintainable code rather than just code that runs. I'm currently working as a Junior Backend Developer, building real features for a production Laravel application.</p>
+    </section>
+
+    <section id="experience">
+      <div class="section-head"><span class="section-num">02</span><h2>Experience</h2></div>
+      <div class="exp-head">
+        <div><span class="exp-role">Junior Backend Developer</span> — <span class="exp-org">UKMC Global</span></div>
+        <div class="exp-date">Apr 2026 — Present</div>
+      </div>
+      <ul class="bullets">
+        <li>Build and maintain backend features in a Laravel application — routing, middleware, controllers, and models within an MVC architecture.</li>
+        <li>Implement authentication and login/authorization workflows to secure application access.</li>
+        <li>Design database relationships (one-to-one, one-to-many) using Eloquent ORM.</li>
+        <li>Built a Student Portal module end-to-end, including dynamic table fields, toggle-status actions, and record deletion.</li>
+        <li>Use jQuery and AJAX for asynchronous form submissions and interactive UI without page reloads, with SweetAlert for user feedback.</li>
+      </ul>
+    </section>
+
+    <section id="projects">
+      <div class="section-head"><span class="section-num">03</span><h2>Projects</h2></div>
+      <div class="filter-row" id="filterRow">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="team">Team</button>
+        <button class="filter-btn" data-filter="individual">Individual</button>
+      </div>
+      <div class="project-grid" id="projectGrid">
+        <div class="project" data-tag="individual">
+          <div class="project-head"><span class="project-title">Laravel CRUD & User Management System</span><span class="project-tag">Individual</span></div>
+          <p>Student registration, recruiter/user management with document &amp; bank-detail handling, and an AJAX-driven CRUD module with live search, pagination, and one-click status toggling. Built with Laravel, jQuery/AJAX, and SweetAlert2.</p>
+          <p style="margin-top:6px;"><a href="https://github.com/Sayed-73/laravel-crud-management-app" target="_blank" rel="noopener">View on GitHub →</a></p>
+        </div>
+        <div class="project" data-tag="team">
+          <div class="project-head"><span class="project-title">Multi-Vendor E-Commerce Platform</span><span class="project-tag">Team</span></div>
+          <p>Separate admin, vendor, user, and employee panels, with full order processing and product management.</p>
+        </div>
+        <div class="project" data-tag="team">
+          <div class="project-head"><span class="project-title">Hospital Management System</span><span class="project-tag">Team</span></div>
+          <p>Staff records and attendance, medicine purchasing and sales, and role-based panels for vendors, staff, and employees.</p>
+        </div>
+        <div class="project" data-tag="team">
+          <div class="project-head"><span class="project-title">School Management System</span><span class="project-tag">Team</span></div>
+          <p>Manages administration, staff, academics, student records, and accounts for an educational institution.</p>
+        </div>
+        <div class="project" data-tag="individual">
+          <div class="project-head"><span class="project-title">Simple School Billing System</span><span class="project-tag">Individual</span></div>
+          <p>A lightweight billing tool for tracking and generating student fee records.</p>
+        </div>
+        <div class="project" data-tag="individual">
+          <div class="project-head"><span class="project-title">Face Detection System</span><span class="project-tag">Individual</span></div>
+          <p>Identifies human faces in digital images and video using computer vision techniques.</p>
+        </div>
+        <div class="project" data-tag="individual">
+          <div class="project-head"><span class="project-title">Driver Drowsiness Detection</span><span class="project-tag">Individual</span></div>
+          <p>A car safety concept that detects driver drowsiness to help prevent fatigue-related accidents.</p>
+        </div>
+        <div class="project" data-tag="individual">
+          <div class="project-head"><span class="project-title">E-Commerce Template</span><span class="project-tag">Individual</span></div>
+          <p>Responsive frontend layout with shopping cart interactions.</p>
+        </div>
+        <div class="project" data-tag="individual">
+          <div class="project-head"><span class="project-title">Digital Banner Design</span><span class="project-tag">Individual</span></div>
+          <p>Visual graphics for websites, social media, and email campaigns.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="about">
-    <div class="section-head"><span class="section-num">01</span><h2>About</h2></div>
-    <p class="lede">I'm a final-year Computer Science undergraduate at the University of Global Village, Barishal, with a particular interest in networking, cybersecurity, and web development. I enjoy understanding systems from both the frontend and backend, and I care about writing clean, maintainable code rather than just code that runs. Outside coursework, I'm currently working as a Junior Backend Developer, building real features for a production Laravel application.</p>
-  </section>
-
-  <section id="experience">
-    <div class="section-head"><span class="section-num">02</span><h2>Experience</h2></div>
-    <div class="exp-head">
-      <div><span class="exp-role">Junior Backend Developer</span> — <span class="exp-org">UKMC Global</span></div>
-      <div class="exp-date">Apr 2026 — Present</div>
-    </div>
-    <ul class="bullets">
-      <li>Build and maintain backend features in a Laravel application — routing, middleware, controllers, and models within an MVC architecture.</li>
-      <li>Implement authentication and login/authorization workflows to secure application access.</li>
-      <li>Design database relationships (one-to-one, one-to-many) using Eloquent ORM.</li>
-      <li>Built a Student Portal module end-to-end, including dynamic table fields, toggle-status actions, and record deletion.</li>
-      <li>Use jQuery and AJAX for asynchronous form submissions and interactive UI without page reloads, with SweetAlert for user feedback.</li>
-    </ul>
-  </section>
-
-  <section id="projects">
-    <div class="section-head"><span class="section-num">03</span><h2>Projects</h2></div>
-
-    <div class="project">
-      <div class="project-head"><span class="project-title">Multi-Vendor E-Commerce Platform</span><span class="project-tag">Team</span></div>
-      <p>Separate admin, vendor, user, and employee panels, with full order processing and product management.</p>
-    </div>
-
-    <div class="project">
-      <div class="project-head"><span class="project-title">Hospital Management System</span><span class="project-tag">Team</span></div>
-      <p>Staff records and attendance, medicine purchasing and sales, and role-based panels for vendors, staff, and employees.</p>
-    </div>
-
-    <div class="project">
-      <div class="project-head"><span class="project-title">School Management System</span><span class="project-tag">Team</span></div>
-      <p>Manages administration, staff, academics, student records, and accounts for an educational institution.</p>
-    </div>
-
-    <div class="project">
-      <div class="project-head"><span class="project-title">Simple School Billing System</span><span class="project-tag">Individual</span></div>
-      <p>A lightweight billing tool for tracking and generating student fee records.</p>
-    </div>
-
-    <div class="project">
-      <div class="project-head"><span class="project-title">Face Detection System</span><span class="project-tag">Individual</span></div>
-      <p>Identifies human faces in digital images and video using computer vision techniques.</p>
-    </div>
-
-    <div class="project">
-      <div class="project-head"><span class="project-title">Driver Drowsiness Detection</span><span class="project-tag">Individual</span></div>
-      <p>A car safety concept that detects driver drowsiness to help prevent fatigue-related accidents.</p>
-    </div>
-
-    <div class="project">
-      <div class="project-head"><span class="project-title">E-Commerce Template</span><span class="project-tag">Individual</span></div>
-      <p>Responsive frontend layout with shopping cart interactions.</p>
-    </div>
-
-    <div class="project">
-      <div class="project-head"><span class="project-title">Digital Banner Design</span><span class="project-tag">Individual</span></div>
-      <p>Visual graphics for websites, social media, and email campaigns.</p>
-    </div>
-  </section>
-
-  <section id="skills">
-    <div class="section-head"><span class="section-num">04</span><h2>Skills</h2></div>
-    <div class="skill-grid">
-      <div class="skill-cat">
-        <h3>Languages</h3>
-        <p>PHP (Laravel), JavaScript (jQuery, AJAX), HTML5, CSS3, C, C++, Python, SQL, Assembly (x86, x64)</p>
+    <section id="skills">
+      <div class="section-head"><span class="section-num">04</span><h2>Skills</h2></div>
+      <div class="skill-grid">
+        <div class="skill-cat">
+          <h3>Languages</h3>
+          <p>PHP (Laravel), JavaScript (jQuery, AJAX), HTML5, CSS3, C, C++, Python, SQL, Assembly (x86, x64)</p>
+        </div>
+        <div class="skill-cat">
+          <h3>Databases</h3>
+          <p>MySQL, SQL Server, Oracle, MS Access, Amazon Server</p>
+        </div>
+        <div class="skill-cat">
+          <h3>Concepts</h3>
+          <p>MVC architecture, RESTful API design, authentication &amp; authorization, database relationship design, responsive web design</p>
+        </div>
+        <div class="skill-cat">
+          <h3>Tools &amp; Platforms</h3>
+          <p>VS Code, Code::Blocks, Git, Draw.io, Adobe Illustrator, Adobe Photoshop, Google Colab, MS Office, Windows, Linux (Ubuntu)</p>
+        </div>
       </div>
-      <div class="skill-cat">
-        <h3>Databases</h3>
-        <p>MySQL, SQL Server, Oracle, MS Access, Amazon Server</p>
-      </div>
-      <div class="skill-cat">
-        <h3>Concepts</h3>
-        <p>MVC architecture, RESTful API design, authentication &amp; authorization, database relationship design, responsive web design</p>
-      </div>
-      <div class="skill-cat">
-        <h3>Tools &amp; Platforms</h3>
-        <p>VS Code, Code::Blocks, Git, Draw.io, Adobe Illustrator, Adobe Photoshop, Google Colab, MS Office, Windows, Linux (Ubuntu)</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="education">
-    <div class="section-head"><span class="section-num">05</span><h2>Education</h2></div>
-    <div class="edu-item">
-      <div class="role">Bachelor of Science in Computer Science</div>
-      <div class="org">University of Global Village (UGV), Barishal — 2022 – 2026</div>
-    </div>
-    <div class="edu-item">
-      <div class="role">Higher Secondary Certificate, Science</div>
-      <div class="org">Govt. B.M. College, Barishal — 2018 – 2020</div>
-    </div>
-    <div class="edu-item">
-      <div class="role">Secondary School Certificate, Science</div>
-      <div class="org">Technical School and College, Barishal — 2018</div>
-    </div>
-  </section>
+    <section id="education">
+      <div class="section-head"><span class="section-num">05</span><h2>Education</h2></div>
+      <div class="edu-item">
+        <div class="role">Bachelor of Science in Computer Science</div>
+        <div class="org">University of Global Village (UGV), Barishal — 2022 – 2026</div>
+      </div>
+      <div class="edu-item">
+        <div class="role">Higher Secondary Certificate, Science</div>
+        <div class="org">Govt. B.M. College, Barishal — 2018 – 2020</div>
+      </div>
+      <div class="edu-item">
+        <div class="role">Secondary School Certificate, Science</div>
+        <div class="org">Technical School and College, Barishal — 2018</div>
+      </div>
+      <div style="margin-top:18px;border-top:1px solid var(--border);padding-top:16px;">
+         <div class="section-head"><span class="section-num">06</span><h2>Certifications</h2></div>
+        <div class="cert-item">IT Support — Level 1, 2022</div>
+        <div class="cert-item">Computer Operation — Level 1, 2022</div>
+        <div class="cert-item">Consumer Electronics — Level 1, 2025</div>
+        <div class="cert-item">Introduction to 2D Animation — Grameenphone Academy</div>
+      </div>
+    </section>
 
-  <section id="certifications">
-    <div class="section-head"><span class="section-num">06</span><h2>Certifications</h2></div>
-    <div class="cert-item">IT Support — Level 1, 2022</div>
-    <div class="cert-item">Computer Operation — Level 1, 2022</div>
-    <div class="cert-item">Consumer Electronics — Level 1, 2025</div>
-    <div class="cert-item">Introduction to 2D Animation — Grameenphone Academy</div>
-  </section>
-
-  <footer id="contact">
-    <div class="section-head"><span class="section-num">07</span><h2>Contact</h2></div>
-    <p class="lede">Open to junior/graduate backend and full-stack roles. Reach out by email or LinkedIn.</p>
-    <div class="contact-row" style="margin-top:18px;">
+    <footer id="contact">
+      <div class="section-head"><span class="section-num">07</span><h2>Contact</h2></div>
+      <p class="lede">Open to junior/graduate backend and full-stack roles. Reach out by email or LinkedIn or WhatsApp.</p>
+     <div class="contact-row" style="margin-top:18px;">
       <a href="mailto:saidulislam0400@gmail.com">saidulislam0400@gmail.com</a>
       <a href="https://www.linkedin.com/in/saidul-islam-051a99340/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/Sayed-73" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://wa.me/+8801776109373?text=Hello,%20I%20saw%20your%20portfolio%20and%20want%20to%20discuss!" target="_blank" rel="noopener">WhatsApp</a>
     </div>
-    <p>© 2026 Saidul Islam Sayed. Barishal, Bangladesh.</p>
-  </footer>
+      <p class="copyright">© 2026 Saidul Islam Sayed. Barishal, Bangladesh.</p>
+    </footer>
 
+  </main>
 </div>
+
+<button id="backToTop" aria-label="Back to top">↑</button>
+
+<script>
+  // Scroll progress bar
+  var progressBar = document.getElementById('scrollProgress');
+  window.addEventListener('scroll', function(){
+    var h = document.documentElement;
+    var scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = scrolled + '%';
+  });
+
+  // Terminal typewriter
+  var typedEl = document.getElementById('typed');
+  var lines = [
+    'whoami → backend developer',
+    'stack → laravel, php, mysql',
+    'focus → clean, secure code',
+    'status → open to opportunities'
+  ];
+  var lineIdx = 0, charIdx = 0, deleting = false;
+  function typeLoop(){
+    var current = lines[lineIdx];
+    if(!deleting){
+      charIdx++;
+      typedEl.textContent = current.slice(0, charIdx);
+      if(charIdx === current.length){
+        deleting = true;
+        setTimeout(typeLoop, 1400);
+        return;
+      }
+    } else {
+      charIdx--;
+      typedEl.textContent = current.slice(0, charIdx);
+      if(charIdx === 0){
+        deleting = false;
+        lineIdx = (lineIdx + 1) % lines.length;
+      }
+    }
+    setTimeout(typeLoop, deleting ? 25 : 45);
+  }
+  typeLoop();
+
+  // Theme toggle
+  var root = document.documentElement;
+  var toggleBtn = document.getElementById('themeToggle');
+  var icon = document.getElementById('themeIcon');
+  var label = document.getElementById('themeLabel');
+  function syncToggleLabel(){
+    var isDark = root.getAttribute('data-theme') === 'dark';
+    icon.textContent = isDark ? '☀️' : '🌙';
+    label.textContent = isDark ? 'Light mode' : 'Dark mode';
+  }
+  syncToggleLabel();
+  toggleBtn.addEventListener('click', function(){
+    var isDark = root.getAttribute('data-theme') === 'dark';
+    if(isDark){ root.removeAttribute('data-theme'); localStorage.setItem('theme','light'); }
+    else { root.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); }
+    syncToggleLabel();
+  });
+
+  // Copy email
+  var copyBtn = document.getElementById('copyEmail');
+  copyBtn.addEventListener('click', function(){
+    var email = copyBtn.getAttribute('data-email');
+    navigator.clipboard.writeText(email).then(function(){
+      var original = copyBtn.textContent;
+      copyBtn.textContent = 'Copied!';
+      setTimeout(function(){ copyBtn.textContent = original; }, 1500);
+    });
+  });
+
+  // Project filter
+  var filterBtns = document.querySelectorAll('.filter-btn');
+  var projects = document.querySelectorAll('.project');
+  filterBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      filterBtns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var filter = btn.getAttribute('data-filter');
+      projects.forEach(function(p){
+        if(filter === 'all' || p.getAttribute('data-tag') === filter){ p.classList.remove('hidden'); }
+        else { p.classList.add('hidden'); }
+      });
+    });
+  });
+
+  // Scrollspy
+  var sections = document.querySelectorAll('main section, main footer');
+  var navLinks = document.querySelectorAll('.side-nav a');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var id = entry.target.getAttribute('id');
+      var link = document.querySelector('.side-nav a[href="#' + id + '"]');
+      if(!link) return;
+      if(entry.isIntersecting){
+        navLinks.forEach(function(l){ l.classList.remove('active'); });
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(function(s){ observer.observe(s); });
+
+  // Back to top
+  var backBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 400){ backBtn.classList.add('show'); }
+    else { backBtn.classList.remove('show'); }
+  });
+  backBtn.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
 </body>
 </html>
