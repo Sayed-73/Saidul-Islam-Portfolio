@@ -1,228 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Portfolio</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #e3f2fd, #fff);
-      color: #333;
-      line-height: 1.6;
-    }
-    header {
-      background-color: #0d47a1;
-      color: white;
-      padding: 40px 20px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    header img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      margin-bottom: 15px;
-    }
-    header h1 {
-      font-size: 2.5rem;
-    }
-    header p {
-      font-size: 1.2rem;
-      margin-top: 10px;
-    }
-    nav {
-      background-color: #1565c0;
-      display: flex;
-      justify-content: center;
-      padding: 15px 0;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 20px;
-      font-weight: bold;
-      transition: color 0.3s ease;
-    }
-    nav a:hover {
-      color: #ffcc00;
-    }
-    section {
-      padding: 60px 20px;
-      max-width: 1000px;
-      margin: 30px auto;
-      background-color: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-      color: #0d47a1;
-      margin-bottom: 20px;
-      font-size: 1.8rem;
-    }
-    ul {
-      list-style-type: square;
-      padding-left: 20px;
-    }
-    ul li {
-      margin-bottom: 10px;
-    }
-    a {
-      color: #0d47a1;
-    }
-    footer {
-      background-color: #0d47a1;
-      color: white;
-      text-align: center;
-      padding: 25px;
-      font-size: 0.9rem;
-      margin-top: 40px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saidul Islam Sayed — Backend Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14171C;
+    --bg-alt: #1B1F26;
+    --line: #2B303A;
+    --text: #E8E6E1;
+    --text-dim: #9AA0AB;
+    --amber: #E8A33D;
+    --teal: #6FA8A3;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--amber);color:#14171C;}
+  a{color:var(--teal);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--amber);outline-offset:3px;}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 28px;}
+
+  /* Nav */
+  header.nav{
+    position:sticky;top:0;z-index:10;
+    background:rgba(20,23,28,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:760px;margin:0 auto;padding:16px 28px;
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+  }
+  .nav-mark{
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.05rem;color:var(--text);
+  }
+  .nav-mark span{color:var(--amber);}
+  nav.links{display:flex;gap:22px;flex-wrap:wrap;}
+  nav.links a{color:var(--text-dim);font-size:0.92rem;margin-right:22px;}
+  nav.links a:last-child{margin-right:0;}
+  nav.links a:hover{color:var(--amber);text-decoration:none;}
+
+  /* Hero */
+  .hero{padding:64px 0 48px;position:relative;}
+  .hero-grid{
+    position:absolute;top:0;right:-40px;width:220px;height:220px;
+    background-image:radial-gradient(var(--line) 1.4px, transparent 1.4px);
+    background-size:18px 18px;
+    opacity:0.6;
+    z-index:0;
+  }
+  .hero-content{position:relative;z-index:1;display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap;}
+  .hero-photo{
+    width:104px;height:104px;border-radius:8px;object-fit:cover;
+    border:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .hero-text{flex:1;min-width:240px;}
+  .eyebrow-role{
+    font-family:'IBM Plex Mono',monospace;color:var(--amber);font-size:0.85rem;letter-spacing:0.02em;margin-bottom:10px;
+  }
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:2.4rem;
+    line-height:1.15;
+    color:var(--text);
+    margin-bottom:14px;
+  }
+  .hero-summary{color:var(--text-dim);font-size:1.02rem;max-width:56ch;margin-bottom:20px;}
+  .contact-row{display:flex;gap:18px;flex-wrap:wrap;font-size:0.92rem;}
+  .contact-row a{color:var(--text);border-bottom:1px solid var(--line);padding-bottom:2px;margin-right:18px;}
+  .contact-row a:last-child{margin-right:0;}
+  .contact-row a:hover{color:var(--amber);border-color:var(--amber);text-decoration:none;}
+
+  /* Sections */
+  section{padding:44px 0;border-top:1px solid var(--line);}
+  .section-head{
+    display:flex;align-items:baseline;gap:14px;margin-bottom:26px;
+  }
+  .section-num{font-family:'IBM Plex Mono',monospace;color:var(--text-dim);font-size:0.85rem;}
+  h2{
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.4rem;color:var(--text);
+  }
+
+  p{color:var(--text-dim);}
+  .lede{color:var(--text);font-size:1.02rem;max-width:62ch;}
+
+  /* Experience */
+  .exp-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+  .exp-role{font-weight:600;color:var(--text);font-size:1.08rem;}
+  .exp-org{color:var(--teal);}
+  .exp-date{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;color:var(--text-dim);}
+  ul.bullets{list-style:none;margin-top:14px;}
+  ul.bullets li{
+    position:relative;padding-left:20px;margin-bottom:10px;color:var(--text-dim);font-size:0.97rem;
+  }
+  ul.bullets li::before{
+    content:"";position:absolute;left:0;top:0.6em;width:6px;height:6px;background:var(--amber);border-radius:1px;
+  }
+
+  /* Projects */
+  .project{
+    padding:20px 0;border-bottom:1px solid var(--line);
+  }
+  .project:last-child{border-bottom:none;}
+  .project-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .project-title{font-weight:600;color:var(--text);font-size:1.02rem;}
+  .project-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:0.76rem;color:var(--teal);
+    border:1px solid var(--line);border-radius:4px;padding:2px 8px;white-space:nowrap;
+  }
+  .project p{margin-top:6px;font-size:0.94rem;}
+
+  /* Skills */
+  .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 32px;}
+  .skill-cat h3{
+    font-family:'Space Grotesk',sans-serif;font-size:0.92rem;font-weight:600;color:var(--amber);margin-bottom:8px;
+  }
+  .skill-cat p{color:var(--text-dim);font-size:0.93rem;}
+  @media(max-width:520px){.skill-grid{grid-template-columns:1fr;}}
+
+  /* Education / Certs */
+  .edu-item, .cert-item{margin-bottom:16px;}
+  .edu-item .role{font-weight:600;color:var(--text);}
+  .edu-item .org, .cert-item{color:var(--text-dim);font-size:0.93rem;}
+
+  /* Footer */
+  footer{padding:44px 0 60px;border-top:1px solid var(--line);}
+  footer .contact-row a{border-color:var(--line);}
+  footer p{margin-top:18px;font-size:0.85rem;color:var(--text-dim);}
+</style>
 </head>
 <body>
 
-  <header>
-    <img src="myphoto.jpg" alt="My Photo" />
-    <h1>Md Saidul Islam  Sayed</h1>
-    <p>Full Stack Developer | Tech Enthusiast</p>
-  </header>
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-mark">Saidul<span>.</span>dev</div>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
 
-  <nav>
-    <a href="#about">About</a>
-    <a href="#projects">Projects</a>
-    <a href="#skills">Skills</a>
-    <a href="#education">Education</a>
-    <a href="#experience">Experience</a>
-     <a href="#thesis-research">THESIS & RESEARCH</a>
-    <a href="#CERTIFICATIONS">CERTIFICATIONS</a>
-   
-    <a href="#contact">Contact</a>
-  </nav>
+<div class="wrap">
+
+  <section class="hero" style="border-top:none;">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <img class="hero-photo" src="myphoto.jpg" alt="Saidul Islam Sayed">
+      <div class="hero-text">
+        <div class="eyebrow-role">Backend Developer — Laravel / PHP</div>
+        <h1>Saidul Islam Sayed</h1>
+        <p class="hero-summary">I build and maintain web applications end to end — from Laravel backends and database design to the AJAX-driven interactions that make them feel responsive.</p>
+        <div class="contact-row">
+          <a href="mailto:saidulislam0400@gmail.com">Email</a>
+          <a href="https://www.linkedin.com/in/saidul-islam-051a99340/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/Sayed-73" target="_blank" rel="noopener">GitHub</a>
+          <a href="tel:+8801776109373">+880 1776-109373</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="about">
-    <h2>About Me</h2>
-    <p align="justify">Hi! I'm a Sayed . I am  current ly doing BSc Engineering in Computer Science. I am interested in Networking , Cyber Security and Web designing. Now I am thesis research on AI-Driven Threat Detection and Mitigation Framework for IoT-Based Healthcare Systems.  I enjoy learning new technologies and understanding how systems work from both a front-end and back-end perspective. Passionate Web Developer with a strong foundation in front-end and back-end technologies, experienced in building responsive, user-friendly, and secure web applications. Skilled in modern frameworks, clean code practices, and problem-solving, with a continuous learning mindset to deliver scalable and high-performance solutions.</p>
-  </section>
-
-  <section id="projects">
-    <h2>Projects</h2>
-    <ul>
-      <li><strong>Driver drowsiness detection</strong> – Driver drowsiness detection is a car safety technology which helps prevent accidents caused by the driver getting drowsy.</li>
-      <li><strong>Face Detection System</strong>: Face detection, also called facial detection, is a computer technology that identifies human faces in digital images and video.</li>
-        <li><strong>School Management System</strong>: It is a management information system helps to manage the different processes in an educational institution like General Administration,  Staff Management,  Academics,  Student Management, and Accounts etc.</li>
-        <li><strong>Digital Banner Description</strong> : A digital banner project involves designing and producing electronic, visual advertisements or informational graphics for use on websites, social media, email campaigns, or digital screens.</li>
-        <li><strong>Hosppital Management Description</strong> : Staff Management, Staff attendance,Medicine buy and sell, Vendor, Staff and employee panel. Order processing , product maintain etc. </li>
-        <li><strong>Simple School Billing System</strong> – .</li>
-      <li><strong>E-commerce Template</strong> – Frontend layout with shopping cart interactions.</li>
-    </ul>
-  </section>
-
-
-    <section id="skills">
-    <h2>Skills</h2>
-    <ul>
-        <li>Web Design (Font-end) </li>
-       <li>Working knowledge of SQL, MySQL, Oracle  and Amazon Server. </li>
-      <li> <strong>Operating Systems:</strong> Windows 2007/2008/2010/2011 Linux (Ubuntu). </li>
-      <li><strong> Databases:</strong> SQL Server 2008/2012 R2, MS Access, Mysql.</li>
-      <li> <strong>Languages:</strong>Languages: C, C++, PHP (Laravel), HTML, CSS, Python, SQL,  Assembly (x86, x64). </li>
-        <li> <strong>Tools: </strong>Code Blocks, Visual Studio code, Draw.io, MS Office, Adobe illustrator, Adobe Photoshop, Google Colab.</li>
-    </ul>
-    </section>
-
-        <section id="Other-skills">
-    <h2>Other Skills</h2>
-    <ul>
-      <li><strong> Microsoft (Word, Excel, PowerPoint)</strong></li>
-      <li><strong>Digital Marketing </strong></li>
-      <li><strong>Data Entry</strong> </li>
-      <li> <strong>Lead generation</strong></li>
-      <li> <strong>Graphics Design & Multimedia Programming</strong></li>
-        <li><strong>Analog & Digital Electronics</strong>  </li>
-     
-    </ul>
-  </section>
-      
-  <section id="education">
-    <h2>Education</h2>
-    <ul>
-      <li><strong>Bachelor of Science in Computer Science</strong> – University of Global Village (UGV) — Barishal, Bangladesh</li>
-      <li><strong>HSC in Science</strong> – GOVT BM Collage Barishal — Barishal, Bangladesh,December, 2020</li>
-      <li><strong>SSC in Science</strong> – Technicla School And Collage — Barishal, Bangladesh, December,2018</li>
-    </ul>
+    <div class="section-head"><span class="section-num">01</span><h2>About</h2></div>
+    <p class="lede">I'm a final-year Computer Science undergraduate at the University of Global Village, Barishal, with a particular interest in networking, cybersecurity, and web development. I enjoy understanding systems from both the frontend and backend, and I care about writing clean, maintainable code rather than just code that runs. Outside coursework, I'm currently working as a Junior Backend Developer, building real features for a production Laravel application.</p>
   </section>
 
   <section id="experience">
-    <h2>Experience</h2>
-    <ul>
-      <li><strong> It Support</strong> </li>
-      <li><strong> Coputer operation </strong> </li>
-       <li><strong> web design </strong>  </li>
-      <li><strong> lead generation  </strong> </li>
-      <li><strong> Data entry </strong> </li>
-    </ul> 
-  </section>
-   <section id="thesis-research">
-    <h2>THESIS & RESEARCH</h2>
-    <ul>
-      <strong>Thesis Topic: AI-Driven Threat Detection and Mitigation Framework for IoT-Based Healthcare Systems.</strong><br>
-University of Global Village |March – 2025 – Present <br>
-<strong>Supervised By: MD Minhaj Ul Islam,</strong> <br>
-Lecturer (AI & Data Science)  of Department Computer Science and Engineering, (UGV).
-</strong>
-  
+    <div class="section-head"><span class="section-num">02</span><h2>Experience</h2></div>
+    <div class="exp-head">
+      <div><span class="exp-role">Junior Backend Developer</span> — <span class="exp-org">UKMC Global</span></div>
+      <div class="exp-date">Apr 2026 — Present</div>
+    </div>
+    <ul class="bullets">
+      <li>Build and maintain backend features in a Laravel application — routing, middleware, controllers, and models within an MVC architecture.</li>
+      <li>Implement authentication and login/authorization workflows to secure application access.</li>
+      <li>Design database relationships (one-to-one, one-to-many) using Eloquent ORM.</li>
+      <li>Built a Student Portal module end-to-end, including dynamic table fields, toggle-status actions, and record deletion.</li>
+      <li>Use jQuery and AJAX for asynchronous form submissions and interactive UI without page reloads, with SweetAlert for user feedback.</li>
     </ul>
   </section>
 
-    <section id="CERTIFICATIONS">
-    <h2>CERTIFICATIONS</h2>
-    <ul>
-      <li><strong>IT Support – Level 1 (2022)</strong></li>
-      <li><strong>Computer Operation – Level 1 (2022)</strong></li>
-      <li><strong>consumer Electronics – Level 1 (2025)</strong></li>
-      <li><strong>Introduction to 2D Animation (Grameenphone Academy)</strong></li>
-    </ul>
+  <section id="projects">
+    <div class="section-head"><span class="section-num">03</span><h2>Projects</h2></div>
+
+    <div class="project">
+      <div class="project-head"><span class="project-title">Multi-Vendor E-Commerce Platform</span><span class="project-tag">Team</span></div>
+      <p>Separate admin, vendor, user, and employee panels, with full order processing and product management.</p>
+    </div>
+
+    <div class="project">
+      <div class="project-head"><span class="project-title">Hospital Management System</span><span class="project-tag">Team</span></div>
+      <p>Staff records and attendance, medicine purchasing and sales, and role-based panels for vendors, staff, and employees.</p>
+    </div>
+
+    <div class="project">
+      <div class="project-head"><span class="project-title">School Management System</span><span class="project-tag">Team</span></div>
+      <p>Manages administration, staff, academics, student records, and accounts for an educational institution.</p>
+    </div>
+
+    <div class="project">
+      <div class="project-head"><span class="project-title">Simple School Billing System</span><span class="project-tag">Individual</span></div>
+      <p>A lightweight billing tool for tracking and generating student fee records.</p>
+    </div>
+
+    <div class="project">
+      <div class="project-head"><span class="project-title">Face Detection System</span><span class="project-tag">Individual</span></div>
+      <p>Identifies human faces in digital images and video using computer vision techniques.</p>
+    </div>
+
+    <div class="project">
+      <div class="project-head"><span class="project-title">Driver Drowsiness Detection</span><span class="project-tag">Individual</span></div>
+      <p>A car safety concept that detects driver drowsiness to help prevent fatigue-related accidents.</p>
+    </div>
+
+    <div class="project">
+      <div class="project-head"><span class="project-title">E-Commerce Template</span><span class="project-tag">Individual</span></div>
+      <p>Responsive frontend layout with shopping cart interactions.</p>
+    </div>
+
+    <div class="project">
+      <div class="project-head"><span class="project-title">Digital Banner Design</span><span class="project-tag">Individual</span></div>
+      <p>Visual graphics for websites, social media, and email campaigns.</p>
+    </div>
   </section>
 
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <p><strong>Email:</strong>saidulislam0400@gmail.com</p>
-    <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/saidul-islam-051a99340/" target="_blank">Saidul Islam</a></p>
-    <p><strong>GitHub:</strong> <a href="https://github.com/Sayed-73" target="_blank">Saidul Islam</a></p>
+  <section id="skills">
+    <div class="section-head"><span class="section-num">04</span><h2>Skills</h2></div>
+    <div class="skill-grid">
+      <div class="skill-cat">
+        <h3>Languages</h3>
+        <p>PHP (Laravel), JavaScript (jQuery, AJAX), HTML5, CSS3, C, C++, Python, SQL, Assembly (x86, x64)</p>
+      </div>
+      <div class="skill-cat">
+        <h3>Databases</h3>
+        <p>MySQL, SQL Server, Oracle, MS Access, Amazon Server</p>
+      </div>
+      <div class="skill-cat">
+        <h3>Concepts</h3>
+        <p>MVC architecture, RESTful API design, authentication &amp; authorization, database relationship design, responsive web design</p>
+      </div>
+      <div class="skill-cat">
+        <h3>Tools &amp; Platforms</h3>
+        <p>VS Code, Code::Blocks, Git, Draw.io, Adobe Illustrator, Adobe Photoshop, Google Colab, MS Office, Windows, Linux (Ubuntu)</p>
+      </div>
+    </div>
   </section>
 
-  <footer>
-    &copy; 2025  Md Saidul Islam  Sayed.  All rights reserved.<br>
-    Undergraduate @ Department of Computer Science, UGV
+  <section id="education">
+    <div class="section-head"><span class="section-num">05</span><h2>Education</h2></div>
+    <div class="edu-item">
+      <div class="role">Bachelor of Science in Computer Science</div>
+      <div class="org">University of Global Village (UGV), Barishal — 2022 – 2026</div>
+    </div>
+    <div class="edu-item">
+      <div class="role">Higher Secondary Certificate, Science</div>
+      <div class="org">Govt. B.M. College, Barishal — 2018 – 2020</div>
+    </div>
+    <div class="edu-item">
+      <div class="role">Secondary School Certificate, Science</div>
+      <div class="org">Technical School and College, Barishal — 2018</div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="section-head"><span class="section-num">06</span><h2>Certifications</h2></div>
+    <div class="cert-item">IT Support — Level 1, 2022</div>
+    <div class="cert-item">Computer Operation — Level 1, 2022</div>
+    <div class="cert-item">Consumer Electronics — Level 1, 2025</div>
+    <div class="cert-item">Introduction to 2D Animation — Grameenphone Academy</div>
+  </section>
+
+  <footer id="contact">
+    <div class="section-head"><span class="section-num">07</span><h2>Contact</h2></div>
+    <p class="lede">Open to junior/graduate backend and full-stack roles. Reach out by email or LinkedIn.</p>
+    <div class="contact-row" style="margin-top:18px;">
+      <a href="mailto:saidulislam0400@gmail.com">saidulislam0400@gmail.com</a>
+      <a href="https://www.linkedin.com/in/saidul-islam-051a99340/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Sayed-73" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p>© 2026 Saidul Islam Sayed. Barishal, Bangladesh.</p>
   </footer>
 
+</div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
