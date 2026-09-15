@@ -47,6 +47,17 @@
     -webkit-font-smoothing:antialiased;
     transition:background .25s ease, color .25s ease;
   }
+ .nav{position:sticky;top:0;z-index:1000;width:100%;background:var(--surface);border-bottom:1px solid var(--border);transition:box-shadow .25s ease,background .25s ease;}
+  .nav.scrolled{box-shadow:0 4px 18px rgba(0,0,0,0.08);}
+  .nav-inner{max-width:1120px;margin:0 auto;padding:16px 24px;display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap;}
+  .nav-mark{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.05rem;color:var(--text);}
+  .nav-mark span{color:var(--accent);}
+  nav.links{display:flex;justify-content:center;align-items:center;gap:30px;flex-wrap:wrap;}
+  nav.links a{position:relative;color:var(--text-dim);font-size:0.92rem;font-weight:500;padding:4px 0;text-decoration:none;transition:color .25s ease,font-weight .25s ease;}
+  nav.links a:hover{color:var(--accent);text-decoration:none;}
+  nav.links a.active{color:var(--accent);font-weight:700;}
+  nav.links a.active::after{content:"";position:absolute;left:0;right:0;bottom:-17px;height:2px;background:var(--accent);border-radius:2px;}
+
  .hero-summary{color:var(--text-dim);font-size:1.02rem;max-width:56ch;margin-bottom:20px;}
   .contact-row{display:flex;gap:18px;flex-wrap:wrap;font-size:0.92rem;}
   .contact-row a{color:var(--teal);font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;border-bottom:1px solid var(--border);padding-bottom:2px;margin-right:18px;}
@@ -215,7 +226,7 @@
 
   .photo-wrap{position:relative;width:76px;margin-bottom:16px;}
   .photo{
-    width:76px;height:76px;border-radius:10px;object-fit:cover;
+    width:100px;height:100px;border-radius:10px;object-fit:cover;
     border:2px solid var(--surface);outline:2px solid var(--accent);outline-offset:1px;
     margin-bottom:0;
   }
@@ -269,6 +280,22 @@
 </style>
 </head>
 <body>
+
+  <header class="nav" id="topNavbar">
+     <div class="nav-inner" id="navInner">
+
+        <nav class="links">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+        </nav>
+        </div>
+
+  </header>
+
 <div id="scrollProgress"></div>
 
 <div class="layout">
@@ -301,14 +328,6 @@
         <li><a href="tel:+8801776109373">Phone_No</a><button class="copy-btn" id="copyPhone" data-phone="+8801776109373">Copy</button></li>
       </ul>
 
-      <nav class="side-nav" id="sideNav">
-        <a href="#about">About</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="#education">Education</a>
-        <a href="#contact">Contact</a>
-      </nav>
     </div>
   </aside>
 
@@ -527,20 +546,26 @@
     });
   });
 
+  // Navbar scroll effect
+  var navbar = document.getElementById('topNavbar');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 20){ navbar.classList.add('scrolled'); }
+    else { navbar.classList.remove('scrolled'); }
+  });
+
   // Scrollspy
   var sections = document.querySelectorAll('main section, main footer');
-  var navLinks = document.querySelectorAll('.side-nav a');
+  var navLinks = document.querySelectorAll('nav.links a');
   var observer = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
-      var id = entry.target.getAttribute('id');
-      var link = document.querySelector('.side-nav a[href="#' + id + '"]');
-      if(!link) return;
       if(entry.isIntersecting){
+        var id = entry.target.getAttribute('id');
         navLinks.forEach(function(l){ l.classList.remove('active'); });
-        link.classList.add('active');
+        var link = document.querySelector('nav.links a[href="#' + id + '"]');
+        if(link) link.classList.add('active');
       }
     });
-  }, { rootMargin: '-40% 0px -50% 0px' });
+  }, { rootMargin: '-25% 0px -65% 0px' });
   sections.forEach(function(s){ observer.observe(s); });
 
   // Back to top
